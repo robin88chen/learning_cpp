@@ -1,5 +1,6 @@
 ﻿################################################################################
 # 這個 .gitignore 檔案由 Microsoft(R) Visual Studio 自動建立。
 ################################################################################
-
-/CopyMoveConstructors/CopyMoveTest/.vs/CopyMoveTest/v16/.suo
+.vs/
+*.suo
+[Dd]ebug/
