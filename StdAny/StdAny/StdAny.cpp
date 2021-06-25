@@ -4,7 +4,6 @@
 #include <vector>
 #include <any>
 static int s_counter = 0;
-static int s_counter2 = 0;
 class obj
 {
 public:
@@ -45,8 +44,11 @@ int main()
         //const std::any& a = obj_vec;  /// 這裡也複製了 obj_vec
         //const std::any& a1 = a0; /// 這個沒有複製
         //const std::any& a2 = std::ref(obj_vec);  /// 這樣不會複製
+        
         //func(obj_vec);  /// 複製一份傳進去
         func(std::ref(obj_vec));  /// 引用傳進去, 不會複製, 但是套了 reference wrapper
+        
+        //func(std::ref(std::any(obj_vec)));  /// std ref 不能這樣用
         std::cout << "end block\n";
     }
 }
