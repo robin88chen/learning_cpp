@@ -11,6 +11,11 @@ public:
     {
         std::cout << " obj " << m_a << " construct. \n";
     };
+    obj(const obj& o)
+    {
+        m_a = o.m_a;
+        std::cout << "obj " << m_a << " copied. \n";
+    }
     ~obj()
     {
         std::cout << " obj " << m_a << " destruct. \n";
@@ -18,6 +23,46 @@ public:
     int m_a;
 };
 
+class bank
+{
+public:
+    bank()
+    {
+        std::cout << "bank construct. \n";
+    }
+    ~bank()
+    {
+        std::cout << "bank destruct. \n";
+    }
+    void set(const std::any& a)
+    {
+        std::cout << "set bank data. \n";
+        m_data = a;
+    }
+    //template <class T> void set_org(T a) /// 如果參數type 直接寫 T, 會複製傳進來
+    template <class T> void set_org(const T& a) /// 這樣是物件參考，參數不會複製
+    {
+        std::cout << "set bank org data. \n";
+        m_data = a; /// 這裡會複製
+    }
+    const std::any& get()
+    {
+        std::cout << "get bank data. \n";
+        return m_data;
+    }
+    template <class T> T get_org()
+    {
+        std::cout << "get bank org data. \n";
+        return std::any_cast<T>(m_data);
+    }
+    template <class T> const T& get_org_ref()
+    {
+        std::cout << "get bank org data. \n";
+        return std::any_cast<const T&>(m_data);
+    }
+    std::any m_data;
+    //const std::any& m_data; /// 不能用
+};
 void func(const std::any& a)
 {
     std::any a1 = a;  /// 如果傳進 value, 會再複製一份, 如果用 std::ref 傳進引用, 就會存放引用不會複製
@@ -51,6 +96,33 @@ int main()
         //func(std::ref(std::any(obj_vec)));  /// std ref 不能這樣用
         std::cout << "end block\n";
     }
+
+    auto b = new bank();
+    std::cout << "any bank test\n";
+    {
+        std::vector<obj> obj_vec{ 10 };
+        b->set_org(obj_vec);
+
+        //auto obv = b->get();  /// 取出 std any, 又複製一遍
+        const std::any& obv = b->get();  /// 這個不會複製
+        std::cout << "bank data got. \n";
+
+        //auto ov = std::any_cast<std::vector<obj>>(obv);  /// 這個會複製
+        //const std::vector<obj>& ov1 = std::any_cast<std::vector<obj>>(obv);  /// 照樣會複製
+        //auto ov1 = std::any_cast<const std::vector<obj>&>(obv);  /// 照樣會複製, auto 不是引用
+        //const std::vector<obj>& ov1 = std::any_cast<const std::vector<obj>&>(obv);  /// 這就沒有複製了
+        //const std::vector<obj>& ov1 = std::any_cast<std::vector<obj>>(obv);  /// 有複製, 因為 any cast 物件而不是參考
+        //auto& ov1 = std::any_cast<const std::vector<obj>&>(obv);  /// 這就沒有複製了
+        
+        //const std::vector<obj>& ov2 = b->get_org<std::vector<obj>>();  /// 有複製
+        //const std::vector<obj>& ov2 = b->get_org<const std::vector<obj>&>();  /// 沒有複製
+        //auto ov2 = b->get_org<const std::vector<obj>&>();  /// 有複製, auto 不是引用
+        auto& ov2 = b->get_org<const std::vector<obj>&>();  /// 沒有複製
+        std::cout << "end block\n";
+    }
+    /// 結論是, any 是 value, 建構或指定時會複製一份; 取值時並不會特別複製一份
+    std::cout << "delete bank\n";
+    delete b;
 }
 
 // 執行程式: Ctrl + F5 或 [偵錯] > [啟動但不偵錯] 功能表
