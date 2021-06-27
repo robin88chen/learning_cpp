@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <any>
+#include <optional>
 static int s_counter = 0;
 class obj
 {
@@ -55,10 +56,17 @@ public:
         std::cout << "get bank org data. \n";
         return std::any_cast<T>(m_data);
     }
-    template <class T> const T& get_org_ref()
+    template <class T> std::optional<T> get_opt()
     {
-        std::cout << "get bank org data. \n";
-        return std::any_cast<const T&>(m_data);
+        std::cout << "get bank opt data. \n";
+        return std::any_cast<T>(m_data);
+    }
+    template <class T> std::optional<std::reference_wrapper<T>> get_opt_ref()
+    {
+        std::cout << "get bank opt data. \n";
+        //return std::any_cast<T>(m_data); /// 這樣編譯不過, C2440
+        //return std::ref(std::any_cast<T>(m_data)); /// 這樣編譯不過 C2280, C2440
+        return std::ref(m_data);
     }
     std::any m_data;
     //const std::any& m_data; /// 不能用
@@ -123,6 +131,22 @@ int main()
     /// 結論是, any 是 value, 建構或指定時會複製一份; 取值時並不會特別複製一份
     std::cout << "delete bank\n";
     delete b;
+
+    auto b1 = new bank();
+    std::cout << "any bank test\n";
+    {
+        std::vector<obj> obj_vec{ 10 };
+        b1->set_org(obj_vec);
+
+        //auto ov1 = b1->get_opt<const std::vector<obj>&>();  /// optional 不能拿引用
+        auto ov1 = b1->get_opt<std::vector<obj>>();  /// optional 給 value, 所以會複製
+        //auto ov1 = b1->get_opt_ref<std::vector<obj>>();  /// optional 不給傳
+        auto ov2 = b1->get_opt_ref<std::any>(); /// 只能取 std::any
+        std::cout << "end block\n";
+    }
+    /// 結論是, optional 只能裝 value, 會複製一份;
+    std::cout << "delete bank\n";
+    delete b1;
 }
 
 // 執行程式: Ctrl + F5 或 [偵錯] > [啟動但不偵錯] 功能表
