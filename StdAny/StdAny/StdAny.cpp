@@ -125,7 +125,9 @@ int main()
         //const std::vector<obj>& ov2 = b->get_org<std::vector<obj>>();  /// 有複製
         //const std::vector<obj>& ov2 = b->get_org<const std::vector<obj>&>();  /// 沒有複製
         //auto ov2 = b->get_org<const std::vector<obj>&>();  /// 有複製, auto 不是引用
-        auto& ov2 = b->get_org<const std::vector<obj>&>();  /// 沒有複製
+        //auto& ov2 = b->get_org<const std::vector<obj>&>();  /// 沒有複製
+        auto& ov2 = b->get_org<std::vector<obj>&>();  /// 沒有複製, 可以取出來改
+        ov2[8].m_a = -23;
         std::cout << "end block\n";
     }
     /// 結論是, any 是 value, 建構或指定時會複製一份; 取值時並不會特別複製一份
@@ -133,7 +135,7 @@ int main()
     delete b;
 
     auto b1 = new bank();
-    std::cout << "any bank test\n";
+    std::cout << "any bank optional test\n";
     {
         std::vector<obj> obj_vec{ 10 };
         b1->set_org(obj_vec);
