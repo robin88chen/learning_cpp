@@ -5,11 +5,18 @@
 #include "Events.h"
 #include "EventPublisher.h"
 
+void onEvent(IEvent* e)
+{
+    std::cout << "on event\n";
+}
 int main()
 {
     std::cout << "Hello World!\n";
     new EventPublisher;
     EventPublisher::Instance()->Subscribe<TestEventCommitted>(std::shared_ptr<TestEventCommittedHandler>(new TestEventCommittedHandler));
+    EventPublisher::Instance()->Subscribe<TestEventCommitted>(std::shared_ptr<TestTemplatedHandler>(new TestTemplatedHandler([=](IEvent* e) {
+        onEvent(e);
+    })));
     EventPublisher::Instance()->Publish(std::shared_ptr<TestEventCommitted>(new TestEventCommitted));
 }
 
