@@ -150,6 +150,9 @@
     <ClInclude Include="Events.h" />
     <ClInclude Include="EventSubscriber.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

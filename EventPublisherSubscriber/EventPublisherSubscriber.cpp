@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Events.h"
 #include "EventPublisher.h"
+#include "EventSubscriber.h"
 
 void onEvent(IEvent* e)
 {
@@ -13,10 +14,15 @@ int main()
 {
     std::cout << "Hello World!\n";
     new EventPublisher;
+    auto collection = new HandlerCollection();
+
     EventPublisher::Instance()->Subscribe<TestEventCommitted>(std::shared_ptr<TestEventCommittedHandler>(new TestEventCommittedHandler));
     EventPublisher::Instance()->Subscribe<TestEventCommitted>(std::shared_ptr<TestTemplatedHandler>(new TestTemplatedHandler([=](IEvent* e) {
         onEvent(e);
     })));
+    EventPublisher::Instance()->Publish(std::shared_ptr<TestEventCommitted>(new TestEventCommitted));
+
+    delete collection;
     EventPublisher::Instance()->Publish(std::shared_ptr<TestEventCommitted>(new TestEventCommitted));
 }
 
