@@ -14,7 +14,8 @@ int main()
 {
     std::cout << "Hello World!\n";
     new EventPublisher;
-    auto collection = new HandlerCollection();
+    //auto collection = new HandlerCollection();
+    auto collection = new SubscriberCollection();
 
     EventPublisher::Instance()->Subscribe<TestEventCommitted>(std::shared_ptr<TestEventCommittedHandler>(new TestEventCommittedHandler));
     EventPublisher::Instance()->Subscribe<TestEventCommitted>(std::shared_ptr<TestTemplatedHandler>(new TestTemplatedHandler([=](IEvent* e) {

@@ -42,6 +42,19 @@ public:
             it->second.emplace_back(std::dynamic_pointer_cast<EventSubscriber, SUB_T>(sub));
         }
     }
+    template <class E_T> void Subscribe(const std::shared_ptr<EventSubscriber>& sub)
+    {
+        if (!sub) return;
+        auto it = m_subscribers.find(E_T::name);
+        if (it == m_subscribers.end())
+        {
+            m_subscribers.insert({ E_T::name, { sub } });
+        }
+        else
+        {
+            it->second.emplace_back(sub);
+        }
+    }
     template <class E_T> void Subscribe(const EventHandler& hand)
     {
         auto it = m_handlers.find(E_T::name);
@@ -67,6 +80,16 @@ public:
                 });
         }
     }
+    template <class E_T> void UnSubscribe(const std::shared_ptr<EventSubscriber>& sub)
+    {
+        if (!sub) return;
+        auto it = m_subscribers.find(E_T::name);
+        if (it != m_subscribers.end())
+        {
+            it->second.remove(sub);
+        }
+    }
+
 private:
     static EventPublisher* m_instance;
 

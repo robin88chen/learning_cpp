@@ -21,3 +21,21 @@ void HandlerCollection::OnEvent(IEvent*)
 {
     std::cout << "Test Event in Handler Collection : " << (int)this << "\n";
 }
+
+SubscriberCollection::SubscriberCollection()
+{
+    // 這樣直接將 lambda function 再做成 subscriber 物件
+    m_onEvent = std::make_shared<EventSubscriber>([this](auto e) { OnEvent(e); });
+    EventPublisher::Instance()->Subscribe<TestEventCommitted>(m_onEvent);
+}
+
+SubscriberCollection::~SubscriberCollection()
+{
+    EventPublisher::Instance()->UnSubscribe<TestEventCommitted>(m_onEvent);
+    m_onEvent = nullptr;
+}
+
+void SubscriberCollection::OnEvent(IEvent*)
+{
+    std::cout << "Test Event in Subscriber Collection : " << (int)this << "\n";
+}
