@@ -4,6 +4,9 @@
 #include <vector>
 #include <any>
 #include <optional>
+#include <functional>
+#include <unordered_map>
+
 static int s_counter = 0;
 class obj
 {
@@ -71,6 +74,19 @@ public:
     std::any m_data;
     //const std::any& m_data; /// 不能用
 };
+using func_any = std::function<std::any(const std::string&)>;
+class func_store
+{
+public:
+    std::any invoke(const std::string& name, const std::string& param)
+    {
+        auto found = m_funcs.find(name);
+        if (found != m_funcs.end()) return found->second(param);
+        return nullptr;
+    }
+
+    std::unordered_map<std::string, func_any> m_funcs;
+};
 void func(const std::any& a)
 {
     std::any a1 = a;  /// 如果傳進 value, 會再複製一份, 如果用 std::ref 傳進引用, 就會存放引用不會複製
@@ -86,6 +102,11 @@ void func(const std::any& a)
     std::cout << "func return\n";  /// 參數跟著內部變數一起解構
 }
 
+std::any any_invoker(const std::string& param)
+{
+    return std::string(param);
+}
+
 int main()
 {
     std::cout << "Hello World!\n";
@@ -97,10 +118,10 @@ int main()
         //const std::any& a = obj_vec;  /// 這裡也複製了 obj_vec
         //const std::any& a1 = a0; /// 這個沒有複製
         //const std::any& a2 = std::ref(obj_vec);  /// 這樣不會複製
-        
+
         //func(obj_vec);  /// 複製一份傳進去
         func(std::ref(obj_vec));  /// 引用傳進去, 不會複製, 但是套了 reference wrapper
-        
+
         //func(std::ref(std::any(obj_vec)));  /// std ref 不能這樣用
         std::cout << "end block\n";
     }
@@ -121,7 +142,7 @@ int main()
         //const std::vector<obj>& ov1 = std::any_cast<const std::vector<obj>&>(obv);  /// 這就沒有複製了
         //const std::vector<obj>& ov1 = std::any_cast<std::vector<obj>>(obv);  /// 有複製, 因為 any cast 物件而不是參考
         //auto& ov1 = std::any_cast<const std::vector<obj>&>(obv);  /// 這就沒有複製了
-        
+
         //const std::vector<obj>& ov2 = b->get_org<std::vector<obj>>();  /// 有複製
         //const std::vector<obj>& ov2 = b->get_org<const std::vector<obj>&>();  /// 沒有複製
         //auto ov2 = b->get_org<const std::vector<obj>&>();  /// 有複製, auto 不是引用
@@ -149,12 +170,17 @@ int main()
     /// 結論是, optional 只能裝 value, 會複製一份;
     std::cout << "delete bank\n";
     delete b1;
+
+    std::cout << "any func store\n";
+    auto fs = new func_store();
+    fs->m_funcs.emplace("any_invoker", any_invoker);
+    std::cout << "invoke func : " << std::any_cast<std::string>(fs->invoke("any_invoker", "test string")) << "\n";
 }
 
 // 執行程式: Ctrl + F5 或 [偵錯] > [啟動但不偵錯] 功能表
 // 偵錯程式: F5 或 [偵錯] > [啟動偵錯] 功能表
 
-// 開始使用的提示: 
+// 開始使用的提示:
 //   1. 使用 [方案總管] 視窗，新增/管理檔案
 //   2. 使用 [Team Explorer] 視窗，連線到原始檔控制
 //   3. 使用 [輸出] 視窗，參閱組建輸出與其他訊息
