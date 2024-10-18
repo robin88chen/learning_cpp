@@ -38,7 +38,6 @@ public:
     {
         std::cout << "bank destruct. \n";
     }
-
     void set(const std::any& a)
     {
         std::cout << "set bank data. \n";
