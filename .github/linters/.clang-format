@@ -1,1 +1,4 @@
-﻿ColumnLimit:    120
+﻿BasedOnStyle: LLVM
+IndentWidth: 4
+Language: Cpp
+ColumnLimit:    120
