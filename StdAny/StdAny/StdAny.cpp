@@ -43,6 +43,7 @@ public:
         std::cout << "set bank data. \n";
         m_data = a;
     }
+
     //template <class T> void set_org(T a) /// 如果參數type 直接寫 T, 會複製傳進來
     template <class T> void set_org(const T& a) /// 這樣是物件參考，參數不會複製
     {
