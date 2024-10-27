@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         config : [Release, Debug]
-        platform : [x86, x64]
+        platform : [Win32, x64]
     steps:
     - uses: actions/checkout@v4
 
