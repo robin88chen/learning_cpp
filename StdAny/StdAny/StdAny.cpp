@@ -24,9 +24,10 @@ public:
     {
         std::cout << " obj " << m_a << " destruct. \n";
     }
-    
+
     int m_a;
 };
+
 
 class bank
 {
