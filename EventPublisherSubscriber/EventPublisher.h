@@ -12,7 +12,7 @@ public:
     EventPublisher();
     ~EventPublisher();
 
-    static EventPublisher* Instance();
+    static EventPublisher* Instance(); 
 
     template <class EV_T> void Publish(const std::shared_ptr<EV_T>& ev)
     {
