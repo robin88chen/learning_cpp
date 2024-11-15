@@ -50,7 +50,7 @@ public:
         std::cout << "set bank org data. \n";
         m_data = a; /// 這裡會複製
     }
-    const std::any& get()
+    const std::any& get()  
     {
         std::cout << "get bank data. \n";
         return m_data;
