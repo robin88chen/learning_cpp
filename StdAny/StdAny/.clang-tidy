@@ -1,4 +1,3 @@
----
 Checks:          'clang-diagnostic-*,clang-analyzer-*,-*,performance-*,bugprone-*,clang-analyzer-*,mpi-*,misc-*,readability-*'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
@@ -183,4 +182,6 @@ CheckOptions:
     value:           '1'
   - key:             readability-uppercase-literal-suffix.NewSuffixes
     value:           ''
-...
+  - key:             readability-identifier-naming.ClassCase
+    value:           CamelCase
+
