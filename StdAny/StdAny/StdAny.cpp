@@ -29,6 +29,7 @@ public:
     int& a() { return m_a; }
 private:
     int m_a;
+    static int m_b;
 };
 
 
