@@ -9,9 +9,13 @@ name: Clang Tidy
 on:
   push:
     branches: [ "main" ]
-    paths: ['**.c', '**.cpp', '**.h', '**.hpp', '**.cxx', '**.hxx', '**.cc', '**.hh', '**CMakeLists.txt', 'meson.build', '**.cmake']
+    paths: ['**.c', '**.cpp', '**.h', '**.hpp', '**.cxx', '**.hxx', '**.cc', '**.hh', '**CMakeLists.txt', '**.cmake']
   pull_request:
     branches: [ "main" ]
+    paths: ['**.c', '**.cpp', '**.h', '**.hpp', '**.cxx', '**.hxx', '**.cc', '**.hh', '**CMakeLists.txt', '**.cmake']
+permissions:
+  contents: read
+  pull-requests: write
 jobs:
   run-lint:
     runs-on: ubuntu-latest
@@ -31,5 +35,9 @@ jobs:
           tidy-checks: '' # Use .clang-tidy config file
           extra-args: '-std=c++17'
           verbosity: debug
+          tidy-review: true
           # only 'update' a single comment in a pull request thread.
           #thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1
