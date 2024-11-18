@@ -33,7 +33,7 @@ jobs:
         with:
           style: ''  # Use .clang-format config file
           tidy-checks: '' # Use .clang-tidy config file
-          extra-args: '-std=c++17','header-filter=../../'
+          extra-args: '-std=c++17,header-filter=../../'
           verbosity: debug
           tidy-review: true
           passive-reviews: true
