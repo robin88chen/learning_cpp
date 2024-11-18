@@ -184,4 +184,8 @@ CheckOptions:
     value:           ''
   - key:             readability-identifier-naming.ClassCase
     value:           CamelCase
+  - key:             readability-identifier-naming.ClassMemberPrefix
+    value:           p_
+  - key:             readability-identifier-naming.ClassMemberCase
+    value:           camelBack
 

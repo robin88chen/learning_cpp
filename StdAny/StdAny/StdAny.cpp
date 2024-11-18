@@ -20,7 +20,7 @@ public:
         m_a = o.m_a;
         std::cout << "obj " << m_a << " copied. \n";
     }
-    
+
     ~obj()
     {
         std::cout << " obj " << m_a << " destruct. \n";
@@ -41,7 +41,7 @@ public:
     {
         std::cout << "bank destruct. \n";
     }
-    void set(const std::any& a)  
+    void set(const std::any& a)
     {
         std::cout << "set bank data. \n";
         m_data = a;
@@ -54,7 +54,7 @@ public:
         m_data = a; /// 這裡會複製
     }
 
-    const std::any& get()  
+    const std::any& get()
     {
         std::cout << "get bank data. \n";
         return m_data;
@@ -77,6 +77,7 @@ public:
         return std::ref(m_data);
     }
     std::any m_data;
+    std::vector<obj> m_org_data;
     //const std::any& m_data; /// 不能用
 };
 using func_any = std::function<std::any(const std::string&)>;
