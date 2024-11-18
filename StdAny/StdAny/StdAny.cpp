@@ -44,10 +44,10 @@ public:
     {
         std::cout << "bank destruct. \n";
     }
-    void set(const std::any& a)
+    void set(const std::any& aB)
     {
         std::cout << "set bank data. \n";
-        m_data = a;
+        m_data = aB;
     }
 
     //template <class T> void set_org(T a) /// 如果參數type 直接寫 T, 會複製傳進來

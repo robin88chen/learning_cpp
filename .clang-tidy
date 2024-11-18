@@ -192,4 +192,8 @@ CheckOptions:
     value:           p_
   - key:             readability-identifier-naming.MemberCase
     value:           camelBack
+  - key:             readability-identifier-naming.ParameterCase
+    value:           lower_case
+  - key:             readability-identifier-naming.MethodCase
+    value:           camelBack
 
