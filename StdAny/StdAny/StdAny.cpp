@@ -26,6 +26,8 @@ public:
         std::cout << " obj " << m_a << " destruct. \n";
     }
 
+    int& a() { return m_a; }
+private:
     int m_a;
 };
 
@@ -104,7 +106,7 @@ void func(const std::any& a)
     //auto ob = std::any_cast<std::vector<obj>>(std::cref(a));  /// 這樣不能轉
     auto ob = std::any_cast<std::reference_wrapper<std::vector<obj>>>(a1);  /// by reference 要這樣轉
     //ob[3].m_a = -1;  // by value
-    ob.get()[3].m_a = -1; // by reference, 要從 wrapper 裡 get 出來
+    ob.get()[3].a() = -1; // by reference, 要從 wrapper 裡 get 出來
     std::cout << "func return\n";  /// 參數跟著內部變數一起解構
 }
 
@@ -154,7 +156,7 @@ int main()
         //auto ov2 = b->get_org<const std::vector<obj>&>();  /// 有複製, auto 不是引用
         //auto& ov2 = b->get_org<const std::vector<obj>&>();  /// 沒有複製
         auto& ov2 = b->get_org<std::vector<obj>&>();  /// 沒有複製, 可以取出來改
-        ov2[8].m_a = -23;
+        ov2[8].a() = -23;
         std::cout << "end block\n";
     }
     /// 結論是, any 是 value, 建構或指定時會複製一份; 取值時並不會特別複製一份
