@@ -37,6 +37,7 @@ jobs:
           verbosity: debug
           tidy-review: true
           passive-reviews: true
+          database: ./StdAny
           # only 'update' a single comment in a pull request thread.
           #thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
       - name: Fail fast?!

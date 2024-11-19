@@ -1,0 +1,7 @@
+﻿[
+  {
+    "directory": "./",
+    "arguments": ["-I../../"],
+    "file": "*.cpp"
+  }
+]
