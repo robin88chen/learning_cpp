@@ -1,6 +1,0 @@
----
-Checks:            '-*'
-WarningsAsErrors:  ''
-HeaderFilterRegex: '_'
-FormatStyle:       'file'
-User:              user
