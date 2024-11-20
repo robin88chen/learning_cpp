@@ -993,7 +993,8 @@ def create_review(
     config = config_file_or_checks(clang_tidy_binary, clang_tidy_checks, config_file)
     base_invocation = [
         clang_tidy_binary,
-        f"-p={build_dir}",
+        #f"-p={build_dir}",
+        "-I../..",
         f"-line-filter={line_ranges}",
         "--enable-check-profile",
         f"-store-check-profile={PROFILE_DIR}",
