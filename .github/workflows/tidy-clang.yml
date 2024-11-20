@@ -26,29 +26,29 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
-      - uses: ./.github/actions/clang-tidy-review
-        id: review
+      #- uses: ./.github/actions/clang-tidy-review
+      #  id: review
 
       # Uploads an artefact containing clang_fixes.json
-      - uses: ./.github/actions/clang-tidy-review/upload
-        id: upload-review
+      #- uses: ./.github/actions/clang-tidy-review/upload
+      #  id: upload-review
 
       # If there are any comments, fail the check
-      - if: steps.review.outputs.total_comments > 0
-        run: exit 1
-      #- uses: cpp-linter/cpp-linter-action@v2
-       # id: linter
-       # env:
-       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       # with:
-       #   style: ''  # Use .clang-format config file
-       #   tidy-checks: '' # Use .clang-tidy config file
-       #   extra-args: '-std=c++17'
-       #   verbosity: debug
-       #   tidy-review: true
-       #   passive-reviews: true
+      #- if: steps.review.outputs.total_comments > 0
+      #  run: exit 1
+      - uses: cpp-linter/cpp-linter-action@v2
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: ''  # Use .clang-format config file
+          tidy-checks: '' # Use .clang-tidy config file
+          extra-args: '-std=c++17 -I./'
+          verbosity: debug
+          tidy-review: true
+          passive-reviews: true
           # only 'update' a single comment in a pull request thread.
           #thread-comments: ${{ github.event_name == 'pull_request' && 'update' }}
-      #- name: Fail fast?!
-      #  if: steps.linter.outputs.checks-failed > 0
-      #  run: exit 1
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1
