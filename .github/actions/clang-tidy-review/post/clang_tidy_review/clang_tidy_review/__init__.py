@@ -994,7 +994,6 @@ def create_review(
     base_invocation = [
         clang_tidy_binary,
         #f"-p={build_dir}",
-        "-- -I../..",
         f"-line-filter={line_ranges}",
         "--enable-check-profile",
         f"-store-check-profile={PROFILE_DIR}",
@@ -1005,6 +1004,7 @@ def create_review(
     else:
         print("Using recursive directory config")
 
+    base_invocation.append("-- -I../..")
     print(f"Spawning a task queue with {max_task} processes")
     start = datetime.datetime.now()
     try:
