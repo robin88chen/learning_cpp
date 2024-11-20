@@ -177,7 +177,6 @@ def build_clang_tidy_warnings(
         invocation.append(f"--export-fixes={fixes_file}")
 
         invocation.append(name)
-        invocation.append('-- -I../..')
 
         proc = subprocess.Popen(
             invocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env
@@ -995,6 +994,7 @@ def create_review(
     base_invocation = [
         clang_tidy_binary,
         #f"-p={build_dir}",
+        "--extra-arg-before=-I../..",
         f"-line-filter={line_ranges}",
         "--enable-check-profile",
         f"-store-check-profile={PROFILE_DIR}",
