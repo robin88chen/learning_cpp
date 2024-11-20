@@ -26,11 +26,11 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
-      - uses: ZedThree/clang-tidy-review@v0.14.0
+      - uses: ./.github/actions/clang-tidy-review
         id: review
 
       # Uploads an artefact containing clang_fixes.json
-      - uses: ZedThree/clang-tidy-review/upload@v0.14.0
+      - uses: ./.github/actions/clang-tidy-review/upload
         id: upload-review
 
       # If there are any comments, fail the check
