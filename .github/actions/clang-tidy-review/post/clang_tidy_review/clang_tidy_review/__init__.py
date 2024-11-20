@@ -177,7 +177,7 @@ def build_clang_tidy_warnings(
         invocation.append(f"--export-fixes={fixes_file}")
 
         invocation.append(name)
-        invocation.append("-- -I../..")
+        invocation.append('-- -I../..')
 
         proc = subprocess.Popen(
             invocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env
