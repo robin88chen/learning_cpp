@@ -994,7 +994,7 @@ def create_review(
     base_invocation = [
         clang_tidy_binary,
         #f"-p={build_dir}",
-        "-I../..",
+        "-- -I../..",
         f"-line-filter={line_ranges}",
         "--enable-check-profile",
         f"-store-check-profile={PROFILE_DIR}",
