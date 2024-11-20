@@ -177,6 +177,7 @@ def build_clang_tidy_warnings(
         invocation.append(f"--export-fixes={fixes_file}")
 
         invocation.append(name)
+        invocation.append("-- -I../..")
 
         proc = subprocess.Popen(
             invocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env
@@ -1004,7 +1005,6 @@ def create_review(
     else:
         print("Using recursive directory config")
 
-    base_invocation.append("-- -I../..")
     print(f"Spawning a task queue with {max_task} processes")
     start = datetime.datetime.now()
     try:
