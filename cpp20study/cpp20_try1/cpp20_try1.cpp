@@ -2,16 +2,29 @@
 //
 
 #include <iostream>
+#include <ranges>
+#include <vector>
 
 int main()
 {
     std::cout << "Hello World!\n";
+    auto data_view = std::ranges::iota_view{ 1, 100 };
+    std::vector<int> vec{ data_view.begin(), data_view.end() };
+    for (auto chunk_data : vec | std::ranges::views::chunk(9)) // C++23 才有的功能
+    {
+        auto elements = chunk_data | std::ranges::views::take(3);
+        std::vector<int> vec_e = { elements.begin(), elements.end() };
+        for (auto e : elements)
+        {
+            std::cout << e << ' ';
+        }
+    }
 }
 
 // 執行程式: Ctrl + F5 或 [偵錯] > [啟動但不偵錯] 功能表
 // 偵錯程式: F5 或 [偵錯] > [啟動偵錯] 功能表
 
-// 開始使用的提示: 
+// 開始使用的提示:
 //   1. 使用 [方案總管] 視窗，新增/管理檔案
 //   2. 使用 [Team Explorer] 視窗，連線到原始檔控制
 //   3. 使用 [輸出] 視窗，參閱組建輸出與其他訊息
