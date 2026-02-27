@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ranges>
 #include <vector>
+#include <chrono>
 
 int main()
 {
@@ -19,6 +20,12 @@ int main()
             std::cout << e << ' ';
         }
     }
+    auto sys_tp = std::chrono::system_clock::now();
+    auto cur_tp = std::chrono::current_zone()->to_local(sys_tp);
+    auto loc_utc_tp = std::chrono::locate_zone("UTC")->to_local(sys_tp);
+    std::cout << "\nsys tp: " << sys_tp << "\n";
+    std::cout << "cur tp: " << cur_tp << "\n";
+    std::cout << "loc utc tp: " << loc_utc_tp << "\n";
 }
 
 // 執行程式: Ctrl + F5 或 [偵錯] > [啟動但不偵錯] 功能表
